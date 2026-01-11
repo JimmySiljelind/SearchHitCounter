@@ -1,13 +1,21 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using SearchHitCounter.Models;
+using SearchHitCounter.Services;
 
 namespace SearchHitCounter.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ISearchService _searchService;
+
+        public HomeController(ISearchService searchService)
+        {
+            _searchService = searchService;
+        }
+
         [HttpGet]
-        public IActionResult Index(string? query)
+        public async Task<IActionResult> Index(string? query, CancellationToken cancellationToken)
         {
             var model = new SearchViewModel();
 
@@ -19,7 +27,10 @@ namespace SearchHitCounter.Controllers
                 if (string.IsNullOrWhiteSpace(trimmed))
                 {
                     model.ErrorMessage = "Please enter at least one word.";
+                    return View(model);
                 }
+
+                model.Results = await _searchService.GetTotalHitsAsync(trimmed, cancellationToken);
             }
 
             return View(model);
