@@ -1,3 +1,4 @@
+@model SearchHitCounter.Models.SearchViewModel
 @{
     ViewData["Title"] = "Search";
 }
@@ -9,13 +10,50 @@
             Enter one or more words to compare total search hits across multiple search engines.
         </p>
         <form method="get" class="d-flex gap-2">
-            <input class="form-control form-control-lg" type="text" name="q" placeholder="e.g. hello world" />
+            <input class="form-control form-control-lg" type="text" name="query" placeholder="e.g. hello world" value="@Model?.Query" />
             <button class="btn btn-primary btn-lg" type="submit">Search</button>
         </form>
         <div class="mt-4">
-            <div class="alert alert-light border" role="status">
-                @* Searchresults will be visible here. *@
-            </div>
+            @if (!string.IsNullOrWhiteSpace(Model?.ErrorMessage))
+            {
+                <div class="alert alert-danger" role="alert">
+                    @Model.ErrorMessage
+                </div>
+            }
+            else if (Model is not null && Model.Results.Count > 0)
+            {
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">Provider</th>
+                                <th scope="col" class="text-end">Total hits</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var result in Model.Results)
+                            {
+                                <tr>
+                                    <td>@result.Provider</td>
+                                    <td class="text-end">@result.TotalHits</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else if (!string.IsNullOrWhiteSpace(Model?.Query))
+            {
+                <div class="alert alert-light border" role="status">
+                    Results will appear here once search providers are wired up.
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-light border" role="status">
+                    Enter a query to get started.
+                </div>
+            }
         </div>
     </div>
 </div>

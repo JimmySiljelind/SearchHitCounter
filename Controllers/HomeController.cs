@@ -6,9 +6,23 @@ namespace SearchHitCounter.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult Index(string? query)
         {
-            return View();
+            var model = new SearchViewModel();
+
+            if (query is not null)
+            {
+                var trimmed = query.Trim();
+                model.Query = trimmed;
+
+                if (string.IsNullOrWhiteSpace(trimmed))
+                {
+                    model.ErrorMessage = "Please enter at least one word.";
+                }
+            }
+
+            return View(model);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
