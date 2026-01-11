@@ -23,29 +23,33 @@ namespace SearchHitCounter.Services
 
         public async Task<long> GetTotalHitsAsync(string query, CancellationToken cancellationToken = default)
         {
+            // Validera konfigurationen
             if (string.IsNullOrWhiteSpace(_options.ApiKey))
             {
                 throw new InvalidOperationException("Google Custom Search API key is not configured.");
             }
-
             if (string.IsNullOrWhiteSpace(_options.SearchEngineId))
             {
                 throw new InvalidOperationException("Google Custom Search engine ID is not configured.");
             }
-
             if (string.IsNullOrWhiteSpace(_options.Endpoint))
             {
                 throw new InvalidOperationException("Google Custom Search endpoint is not configured.");
             }
+
+            // Bygg förfrågnings-URI
             var requestUri =
                 $"{_options.Endpoint}?key={Uri.EscapeDataString(_options.ApiKey)}&cx={Uri.EscapeDataString(_options.SearchEngineId)}&q={Uri.EscapeDataString(query)}";
 
+            // Skicka förfrågan och hantera svaret
             using var response = await _httpClient.GetAsync(requestUri, cancellationToken);
             response.EnsureSuccessStatusCode();
 
+            // Läs och analysera JSON-svaret
             await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
             using var document = await JsonDocument.ParseAsync(stream, cancellationToken: cancellationToken);
 
+            // (searchInformation.totalResults) Det uppskattade totala antalet träffar över alla sidor för den sökfrågan.
             if (document.RootElement.TryGetProperty("searchInformation", out var info)
                 && info.TryGetProperty("totalResults", out var totalResults))
             {
