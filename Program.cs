@@ -5,7 +5,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.Configure<GoogleSearchOptions>(builder.Configuration.GetSection("GoogleSearch"));
+builder.Services.Configure<AlgoliaSearchOptions>(builder.Configuration.GetSection("AlgoliaSearch"));
 builder.Services.AddHttpClient<ISearchProvider, GoogleSearchProvider>();
+builder.Services.AddHttpClient<ISearchProvider, AlgoliaSearchProvider>();
 builder.Services.AddSingleton<ISearchService, SearchService>();
 
 var app = builder.Build();

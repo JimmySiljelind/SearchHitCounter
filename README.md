@@ -7,7 +7,7 @@ ASP.NET Core MVC-app som frågar flera sökmotorer och summerar totalt antal tr�
 - Visual Studio 2026 med ASP.NET-workload
 - API-nycklar för:
   - Google Custom Search (API-nyckel + Search Engine ID)
-  - Brave Search API
+  - Algolia (Application ID + API key + index name)
 
 ## Konfigurera API-nycklar
 
@@ -19,6 +19,11 @@ Redigera `appsettings.json` och fyll i:
 "GoogleSearch": {
   "ApiKey": "YOUR_GOOGLE_KEY",
   "SearchEngineId": "YOUR_CSE_ID"
+},
+"AlgoliaSearch": {
+  "ApplicationId": "YOUR_ALGOLIA_APP_ID",
+  "ApiKey": "YOUR_ALGOLIA_API_KEY",
+  "IndexName": "YOUR_ALGOLIA_INDEX"
 }
 ```
 
@@ -26,10 +31,14 @@ Redigera `appsettings.json` och fyll i:
 
 - dotnet user-secrets set "GoogleSearch:ApiKey" "YOUR_GOOGLE_KEY"
 - dotnet user-secrets set "GoogleSearch:SearchEngineId" "YOUR_CSE_ID"
+- dotnet user-secrets set "AlgoliaSearch:ApplicationId" "YOUR_ALGOLIA_APP_ID"
+- dotnet user-secrets set "AlgoliaSearch:ApiKey" "YOUR_ALGOLIA_API_KEY"
+- dotnet user-secrets set "AlgoliaSearch:IndexName" "YOUR_ALGOLIA_INDEX"
 
 ## Var du skaffar nycklar
 
 - Google Custom Search API: https://console.cloud.google.com/ och https://cse.google.com/cse
+- Algolia: https://www.algolia.com/
 
 ## Bygg och kör
 
