@@ -34,8 +34,23 @@
                             @foreach (var result in Model.Results)
                             {
                                 <tr>
-                                    <td>@result.Provider</td>
-                                    <td class="text-end">@result.TotalHits</td>
+                                    <td>
+                                        @result.Provider
+                                        @if (!string.IsNullOrWhiteSpace(result.ErrorMessage))
+                                        {
+                                            <div class="text-danger small">@result.ErrorMessage</div>
+                                        }
+                                    </td>
+                                    <td class="text-end">
+                                        @if (string.IsNullOrWhiteSpace(result.ErrorMessage))
+                                        {
+                                            @result.TotalHits.ToString("N0")
+                                        }
+                                        else
+                                        {
+                                            <span class="text-danger">Null</span>
+                                        }
+                                    </td>
                                 </tr>
                             }
                         </tbody>
@@ -45,7 +60,7 @@
             else if (!string.IsNullOrWhiteSpace(Model?.Query))
             {
                 <div class="alert alert-light border" role="status">
-                    Results will appear here once search providers are wired up.
+                    No results for this query.
                 </div>
             }
             else

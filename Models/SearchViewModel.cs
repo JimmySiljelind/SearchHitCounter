@@ -13,5 +13,6 @@ namespace SearchHitCounter.Models
     {
         public string Provider { get; set; } = string.Empty;
         public long TotalHits { get; set; }
+        public string? ErrorMessage { get; set; }
     }
 }
