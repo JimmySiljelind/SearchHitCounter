@@ -1,7 +1,12 @@
+using SearchHitCounter.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.Configure<GoogleSearchOptions>(builder.Configuration.GetSection("GoogleSearch"));
+builder.Services.AddHttpClient<ISearchProvider, GoogleSearchProvider>();
+builder.Services.AddSingleton<ISearchService, SearchService>();
 
 var app = builder.Build();
 
