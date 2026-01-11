@@ -143,9 +143,11 @@ body {
   margin: 0;
 }
 
-.results-meta {
+.results-subtitle {
   font-size: 0.9rem;
   color: var(--muted);
+  margin-left: auto;
+  text-align: right;
 }
 
 .results-list {

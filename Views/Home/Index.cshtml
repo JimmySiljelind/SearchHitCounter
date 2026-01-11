@@ -13,7 +13,7 @@
             Enter one or more words to compare total hits across multiple engines. Each word is searched and summed.
         </p>
         <form method="get" class="search-form">
-            <input class="search-input" type="text" name="query" placeholder="e.g. hello world" value="@Model?.Query" />
+            <input class="search-input" type="text" name="query" placeholder="e.g. hello world" value="" />
             <button class="search-button" type="submit">Search</button>
         </form>
     </div>
@@ -22,6 +22,7 @@
         <div class="results-card">
             <div class="results-header">
                 <h2 class="results-title">Results</h2>
+                <div class="results-subtitle">Total hits for "<strong>@Model?.Query</strong>"</div>
             </div>
             <div class="results-list">
                 @foreach (var result in Model.Results)
