@@ -23,6 +23,20 @@ namespace SearchHitCounter.Services
 
         public async Task<long> GetTotalHitsAsync(string query, CancellationToken cancellationToken = default)
         {
+            if (string.IsNullOrWhiteSpace(_options.ApiKey))
+            {
+                throw new InvalidOperationException("Google Custom Search API key is not configured.");
+            }
+
+            if (string.IsNullOrWhiteSpace(_options.SearchEngineId))
+            {
+                throw new InvalidOperationException("Google Custom Search engine ID is not configured.");
+            }
+
+            if (string.IsNullOrWhiteSpace(_options.Endpoint))
+            {
+                throw new InvalidOperationException("Google Custom Search endpoint is not configured.");
+            }
             var requestUri =
                 $"{_options.Endpoint}?key={Uri.EscapeDataString(_options.ApiKey)}&cx={Uri.EscapeDataString(_options.SearchEngineId)}&q={Uri.EscapeDataString(query)}";
 
