@@ -1,74 +1,62 @@
 @model SearchHitCounter.Models.SearchViewModel
+@using System
 @{
     ViewData["Title"] = "Search";
+    var hasResults = Model is not null && Model.Results.Count > 0;
 }
 
-<div class="row justify-content-center">
-    <div class="col-lg-8">
-        <h1 class="mb-3">Search hit counter</h1>
-        <p class="text-muted mb-4">
-            Enter one or more words to compare total search hits across multiple search engines.
+<div class="search-shell @(hasResults ? "has-results" : "no-results")">
+    <div class="search-card">
+        <span class="search-badge">Search hit counter</span>
+        <h1 class="search-title">Compare search volume, fast</h1>
+        <p class="search-subtitle">
+            Enter one or more words to compare total hits across multiple engines. Each word is searched and summed.
         </p>
-        <form method="get" class="d-flex gap-2">
-            <input class="form-control form-control-lg" type="text" name="query" placeholder="e.g. hello world" value="@Model?.Query" />
-            <button class="btn btn-primary btn-lg" type="submit">Search</button>
+        <form method="get" class="search-form">
+            <input class="search-input" type="text" name="query" placeholder="e.g. hello world" value="@Model?.Query" />
+            <button class="search-button" type="submit">Search</button>
         </form>
-        <div class="mt-4">
-            @if (!string.IsNullOrWhiteSpace(Model?.ErrorMessage))
-            {
-                <div class="alert alert-danger" role="alert">
-                    @Model.ErrorMessage
-                </div>
-            }
-            else if (Model is not null && Model.Results.Count > 0)
-            {
-                <div class="table-responsive">
-                    <table class="table table-bordered align-middle">
-                        <thead class="table-light">
-                            <tr>
-                                <th scope="col">Provider</th>
-                                <th scope="col" class="text-end">Total hits</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var result in Model.Results)
-                            {
-                                <tr>
-                                    <td>
-                                        @result.Provider
-                                        @if (!string.IsNullOrWhiteSpace(result.ErrorMessage))
-                                        {
-                                            <div class="text-danger small">@result.ErrorMessage</div>
-                                        }
-                                    </td>
-                                    <td class="text-end">
-                                        @if (string.IsNullOrWhiteSpace(result.ErrorMessage))
-                                        {
-                                            @result.TotalHits.ToString("N0")
-                                        }
-                                        else
-                                        {
-                                            <span class="text-danger">Null</span>
-                                        }
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            }
-            else if (!string.IsNullOrWhiteSpace(Model?.Query))
-            {
-                <div class="alert alert-light border" role="status">
-                    No results for this query.
-                </div>
-            }
-            else
-            {
-                <div class="alert alert-light border" role="status">
-                    Enter a query to get started.
-                </div>
-            }
-        </div>
     </div>
+    @if (hasResults)
+    {
+        <div class="results-card">
+            <div class="results-header">
+                <h2 class="results-title">Results</h2>
+            </div>
+            <div class="results-list">
+                @foreach (var result in Model.Results)
+                {
+                    <div class="result-row">
+                        <div class="result-provider">
+                            <div class="provider-name">
+                                @if (string.Equals(result.Provider, "Google", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    <span class="provider-icon provider-google" aria-hidden="true">G</span>
+                                }
+                                else if (string.Equals(result.Provider, "Algolia", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    <span class="provider-icon provider-algolia" aria-hidden="true">A</span>
+                                }
+                                @result.Provider
+                            </div>
+                            @if (!string.IsNullOrWhiteSpace(result.ErrorMessage))
+                            {
+                                <div class="provider-error">@result.ErrorMessage</div>
+                            }
+                        </div>
+                        <div class="result-hits">
+                            @if (string.IsNullOrWhiteSpace(result.ErrorMessage))
+                            {
+                                <span class="results-value">@result.TotalHits.ToString("N0")</span>
+                            }
+                            else
+                            {
+                                <span class="provider-error">Null</span>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
 </div>
