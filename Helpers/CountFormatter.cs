@@ -1,6 +1,6 @@
-using System.Globalization;
+﻿using System.Globalization;
 
-namespace SearchHitCounter.Models
+namespace SearchHitCounter.Helpers
 {
     public static class CountFormatter
     {
@@ -21,3 +21,4 @@ namespace SearchHitCounter.Models
         }
     }
 }
+
