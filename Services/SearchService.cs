@@ -15,16 +15,20 @@ namespace SearchHitCounter.Services
         {
             var results = new List<SearchResultItem>();
 
+            // Separerar queryn ni i individuella termer
             var terms = query
-                .Split(' ', System.StringSplitOptions.RemoveEmptyEntries | System.StringSplitOptions.TrimEntries);
+                .Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
+            // Om inga termer finns, returnera tom lista
             if (terms.Length == 0)
             {
                 return results;
             }
 
+            // Frågar varje provider om total hits för varje term
             foreach (var provider in _providers)
             {
+                // Skapar ett resultatobjekt för varje provider
                 var result = new SearchResultItem
                 {
                     Provider = provider.Name
@@ -32,6 +36,7 @@ namespace SearchHitCounter.Services
 
                 try
                 {
+                    // Summerar total hits för alla termer
                     long total = 0;
                     foreach (var term in terms)
                     {
@@ -40,8 +45,9 @@ namespace SearchHitCounter.Services
 
                     result.TotalHits = total;
                 }
-                catch (System.Exception ex)
+                catch (Exception ex)
                 {
+                    // Hanterar eventuella fel från providern
                     result.TotalHits = 0;
                     result.ErrorMessage = ex.Message;
                 }
