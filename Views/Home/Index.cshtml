@@ -48,7 +48,9 @@
                         <div class="result-hits">
                             @if (string.IsNullOrWhiteSpace(result.ErrorMessage))
                             {
-                                <span class="results-value">@result.TotalHits.ToString("N0")</span>
+                                // Ifall man vill ha hela talet utan formattering.
+                                @* <span class="results-value">@result.TotalHits.ToString("N0")</span> *@
+                                <span class="results-value">@SearchHitCounter.Models.CountFormatter.Format(result.TotalHits)</span>
                             }
                             else
                             {
