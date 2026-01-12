@@ -33,19 +33,19 @@ namespace SearchHitCounter.Services
                 throw new InvalidOperationException("Google Custom Search endpoint is not configured.");
             }
 
-            // Bygg f�rfr�gnings-URI
+            // Bygg förfrågnings-URI
             var requestUri =
                 $"{_options.Endpoint}?key={Uri.EscapeDataString(_options.ApiKey)}&cx={Uri.EscapeDataString(_options.SearchEngineId)}&q={Uri.EscapeDataString(query)}";
 
-            // Skicka f�rfr�gan och hantera svaret
+            // Skicka förfrågan och hantera svaret
             using var response = await _httpClient.GetAsync(requestUri, cancellationToken);
             response.EnsureSuccessStatusCode();
 
-            // L�s och analysera JSON-svaret
+            // Läs och analysera JSON-svaret
             await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
             using var document = await JsonDocument.ParseAsync(stream, cancellationToken: cancellationToken);
 
-            // (searchInformation.totalResults) Det uppskattade totala antalet tr�ffar �ver alla sidor f�r den s�kfr�gan.
+            // (searchInformation.totalResults) Det uppskattade totala antalet träffar över alla sidor för den sökfrågan.
             if (document.RootElement.TryGetProperty("searchInformation", out var info)
                 && info.TryGetProperty("totalResults", out var totalResults))
             {
