@@ -17,8 +17,7 @@ namespace SearchHitCounter.Helpers
         {
             // Dela värdet med enheten och formatera det med upp till två decimaler.
             var scaled = value / (double)unit;
-            return scaled.ToString("0.0#", CultureInfo.InvariantCulture) + unitSuffix;
+            return scaled.ToString("0.##", CultureInfo.InvariantCulture) + unitSuffix;
         }
     }
 }
-
