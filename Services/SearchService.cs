@@ -1,3 +1,5 @@
+using SearchHitCounter.Models;
+
 namespace SearchHitCounter.Services
 {
     public class SearchService : ISearchService

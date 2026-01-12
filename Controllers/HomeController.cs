@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Mvc;
+using SearchHitCounter.Models;
+using SearchHitCounter.Services;
 using System.Diagnostics;
 
 namespace SearchHitCounter.Controllers
