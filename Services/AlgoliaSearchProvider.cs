@@ -71,11 +71,13 @@ namespace SearchHitCounter.Services
             {
                 if (hitsElement.ValueKind == JsonValueKind.Number && hitsElement.TryGetInt64(out var hits))
                 {
+                    // Hanterar fallet där antalet träffar returneras som ett nummer
                     return hits;
                 }
 
                 if (hitsElement.ValueKind == JsonValueKind.String)
                 {
+                    // Hanterar fallet där antalet träffar returneras som en sträng
                     var hitsText = hitsElement.GetString();
                     if (long.TryParse(hitsText, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsedHits))
                     {

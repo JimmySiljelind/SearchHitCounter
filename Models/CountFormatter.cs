@@ -4,6 +4,7 @@ namespace SearchHitCounter.Models
 {
     public static class CountFormatter
     {
+        // Formaterar ett heltal till en sträng med förkortningar för tusen (k), miljon (M) och miljard (mdr).
         public static string Format(long value) => value switch
         {
             < 1_000 => value.ToString(CultureInfo.InvariantCulture),
@@ -14,6 +15,7 @@ namespace SearchHitCounter.Models
 
         private static string FormatTotalResult(long value, long unit, string unitSuffix)
         {
+            // Dela värdet med enheten och formatera det med upp till två decimaler.
             var scaled = value / (double)unit;
             return scaled.ToString("0.0#", CultureInfo.InvariantCulture) + unitSuffix;
         }

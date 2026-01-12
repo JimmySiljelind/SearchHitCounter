@@ -45,10 +45,11 @@ namespace SearchHitCounter.Services
             await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
             using var document = await JsonDocument.ParseAsync(stream, cancellationToken: cancellationToken);
 
-            // (searchInformation.totalResults) Det uppskattade totala antalet träffar över alla sidor för den sökfrågan.
+            // (searchInformation.totalResults) Det uppskattade totala antalet träffar över alla sidor för den sökfrågan
             if (document.RootElement.TryGetProperty("searchInformation", out var info)
                 && info.TryGetProperty("totalResults", out var totalResults))
             {
+                // Konvertera totalResults från sträng till long och returnerar det totala antalet träffar
                 var totalString = totalResults.GetString();
                 if (long.TryParse(totalString, NumberStyles.Integer, CultureInfo.InvariantCulture, out var total))
                 {

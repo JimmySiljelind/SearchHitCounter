@@ -36,7 +36,7 @@ namespace SearchHitCounter.Services
 
                 try
                 {
-                    // Summerar total hits för alla termer
+                    // Summerar total hits för alla termer från providern
                     long total = 0;
                     foreach (var term in terms)
                     {
@@ -47,7 +47,7 @@ namespace SearchHitCounter.Services
                 }
                 catch (Exception ex)
                 {
-                    // Hanterar eventuella fel från providern
+                    // Hanterar eventuella fel från providern och loggar felmeddelandet i resultatet
                     result.TotalHits = 0;
                     result.ErrorMessage = ex.Message;
                 }
