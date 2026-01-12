@@ -1,7 +1,4 @@
 using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using SearchHitCounter.Models;
-using SearchHitCounter.Services;
 
 namespace SearchHitCounter.Controllers
 {

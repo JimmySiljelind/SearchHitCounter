@@ -1,10 +1,5 @@
-using System;
 using System.Globalization;
-using System.Net.Http;
 using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
 
 namespace SearchHitCounter.Services
 {
@@ -37,19 +32,19 @@ namespace SearchHitCounter.Services
                 throw new InvalidOperationException("Google Custom Search endpoint is not configured.");
             }
 
-            // Bygg förfrågnings-URI
+            // Bygg fï¿½rfrï¿½gnings-URI
             var requestUri =
                 $"{_options.Endpoint}?key={Uri.EscapeDataString(_options.ApiKey)}&cx={Uri.EscapeDataString(_options.SearchEngineId)}&q={Uri.EscapeDataString(query)}";
 
-            // Skicka förfrågan och hantera svaret
+            // Skicka fï¿½rfrï¿½gan och hantera svaret
             using var response = await _httpClient.GetAsync(requestUri, cancellationToken);
             response.EnsureSuccessStatusCode();
 
-            // Läs och analysera JSON-svaret
+            // Lï¿½s och analysera JSON-svaret
             await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
             using var document = await JsonDocument.ParseAsync(stream, cancellationToken: cancellationToken);
 
-            // (searchInformation.totalResults) Det uppskattade totala antalet träffar över alla sidor för den sökfrågan.
+            // (searchInformation.totalResults) Det uppskattade totala antalet trï¿½ffar ï¿½ver alla sidor fï¿½r den sï¿½kfrï¿½gan.
             if (document.RootElement.TryGetProperty("searchInformation", out var info)
                 && info.TryGetProperty("totalResults", out var totalResults))
             {
