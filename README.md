@@ -4,7 +4,7 @@ ASP.NET Core MVC-app som frågar flera sökmotorer och summerar totalt antal tr�
 
 ## Förutsättningar
 
-- Visual Studio 2026 med ASP.NET-workload
+- Visual Studio 2026 med ASP.NET-workload och .NET 10.0
 - API-nycklar för:
   - Google Custom Search (API-nyckel + Search Engine ID)
   - Algolia (Application ID + API key + index name)
