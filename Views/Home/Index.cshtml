@@ -9,11 +9,13 @@
     <div class="search-card">
         <span class="search-badge">Search hit counter</span>
         <h1 class="search-title">Compare search volume, fast</h1>
-        <p class="search-subtitle">
+        <p class="search-subtitle" id="search-help">
             Enter one or more words to compare total hits across multiple engines. Each word is searched and summed.
         </p>
         <form method="get" class="search-form">
-            <input class="search-input" type="text" name="query" placeholder="e.g. hello world" value="" />
+            <label class="visually-hidden" for="search-query">Search terms</label>
+            <input class="search-input" type="text" id="search-query" name="query" placeholder="e.g. hello world"
+                value="@Model?.Query" aria-describedby="search-help" />
             <button class="search-button" type="submit">Search</button>
         </form>
     </div>
@@ -24,10 +26,10 @@
                 <h2 class="results-title">Results</h2>
                 <div class="results-subtitle">Total hits for "<strong>@Model?.Query</strong>"</div>
             </div>
-            <div class="results-list">
+            <ul class="results-list" role="list" aria-live="polite">
                 @foreach (var result in Model.Results)
                 {
-                    <div class="result-row">
+                    <li class="result-row">
                         <div class="result-provider">
                             <div class="provider-name">
                                 @if (string.Equals(result.Provider, "Google", StringComparison.OrdinalIgnoreCase))
@@ -57,9 +59,9 @@
                                 <span class="provider-error">Null</span>
                             }
                         </div>
-                    </div>
+                    </li>
                 }
-            </div>
+            </ul>
         </div>
     }
 </div>
