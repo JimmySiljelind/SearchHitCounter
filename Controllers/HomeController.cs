@@ -14,28 +14,27 @@ namespace SearchHitCounter.Controllers
             _searchService = searchService;
         }
 
-        // Hämtar sökresultat baserat på användarens sökfråga
+        // HÃ¤mtar sÃ¶kresultat baserat pÃ¥ anvÃ¤ndarens sÃ¶kfrÃ¥ga
         [HttpGet]
         public async Task<IActionResult> Index(string? query, CancellationToken cancellationToken)
         {
             var model = new SearchViewModel();
 
-            // Om query är null eller tom, returnera en tom modell
-            if (query is not null)
+            // Ingen sÃ¶kning gjord: parametern finns inte alls (fÃ¶rsta besÃ¶ket)
+            if (!Request.Query.ContainsKey(nameof(query)))
+                return View(model);
+
+            // SÃ¶kning gjord men tom/whitespace
+            if (string.IsNullOrWhiteSpace(query))
             {
-                var trimmed = query.Trim();
-                model.Query = trimmed;
-
-                // Om query är tom efter trim, visa ett felmeddelande
-                if (string.IsNullOrWhiteSpace(trimmed))
-                {
-                    model.ErrorMessage = "Please enter at least one word.";
-                    return View(model);
-                }
-
-                // Hämta sökresultat från tjänsten
-                model.Results = await _searchService.GetTotalHitsAsync(trimmed, cancellationToken);
+                model.ErrorMessage = "Please enter at least one word.";
+                return View(model);
             }
+
+            var trimmed = query.Trim();
+            model.Query = trimmed;
+
+            model.Results = await _searchService.GetTotalHitsAsync(trimmed, cancellationToken);
 
             return View(model);
         }

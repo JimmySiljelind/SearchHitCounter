@@ -18,6 +18,10 @@
                 value="@Model?.Query" aria-describedby="search-help" />
             <button class="search-button" type="submit">Search</button>
         </form>
+        @if (!string.IsNullOrWhiteSpace(Model?.ErrorMessage))
+        {
+            <div class="search-error" role="alert">@Model.ErrorMessage</div>
+        }
     </div>
     @if (hasResults)
     {

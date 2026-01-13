@@ -104,6 +104,13 @@ body {
   max-width: 720px;
 }
 
+.search-error {
+  color: #b91c1c;
+  font-size: 0.9rem;
+  margin-top: 8px;
+  max-width: 720px;
+}
+
 .search-input {
   flex: 1 1 320px;
   border-radius: 999px;
