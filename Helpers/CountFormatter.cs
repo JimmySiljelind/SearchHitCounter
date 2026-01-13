@@ -7,6 +7,7 @@ namespace SearchHitCounter.Helpers
         // Formaterar ett heltal till en sträng med förkortningar för tusen (k), miljon (M) och miljard (mdr).
         public static string Format(long value) => value switch
         {
+            // Om värdet är mindre än X, returnera formaterat värde.
             < 1_000 => value.ToString(CultureInfo.InvariantCulture),
             < 1_000_000 => FormatTotalResult(value, 1_000, "k"),
             < 1_000_000_000 => FormatTotalResult(value, 1_000_000, "M"),
