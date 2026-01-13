@@ -20,20 +20,22 @@ namespace SearchHitCounter.Controllers
         {
             var model = new SearchViewModel();
 
-            // Ingen sökning gjord: parametern finns inte alls (första besöket)
+            // Ingen sökning gjord (första besöket)
             if (!Request.Query.ContainsKey(nameof(query)))
                 return View(model);
 
-            // Sökning gjord men tom/whitespace
+            // Sökfrågan är tom eller bara mellanslag
             if (string.IsNullOrWhiteSpace(query))
             {
                 model.ErrorMessage = "Please enter at least one word.";
                 return View(model);
             }
 
+            // Trimma sökfrågan och spara i modellen
             var trimmed = query.Trim();
             model.Query = trimmed;
 
+            // Hämta sökresultat och total träffar från tjänsten
             model.Results = await _searchService.GetTotalHitsAsync(trimmed, cancellationToken);
 
             return View(model);
